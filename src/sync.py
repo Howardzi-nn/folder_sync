@@ -76,6 +76,53 @@ async def synchronize_folders_delete(
                     f"Deleted {file} file {replica_file}")
 
 
+async def synchronize_empty_folders(source_folder, replica_folder, logger):
+    # Create empty folders in replica folder
+    for root, dirs, _ in os.walk(source_folder):
+        for directory in dirs:
+            source_sub_folder = str(os.path.join(root, directory))
+            replica_sub_folder = os.path.join(
+                replica_folder, os.path.relpath(
+                    source_sub_folder, source_folder))
+
+            if not os.path.exists(replica_sub_folder):
+                os.makedirs(replica_sub_folder)
+                logger.info(
+                    f"[{inspect.currentframe().f_code.co_name}] "
+                    f"Created empty folder {replica_sub_folder}"
+                )
+
+    # Try to delete empty folders in replica folder
+    for root, dirs, _ in os.walk(replica_folder, topdown=False):
+        for directory in dirs:
+            replica_sub_folder = str(os.path.join(root, directory))
+            source_sub_folder = os.path.join(
+                source_folder, os.path.relpath(
+                    replica_sub_folder, replica_folder)
+            )
+
+            if not os.path.exists(source_sub_folder):
+                if not os.listdir(replica_sub_folder):
+                    logger.info(
+                        f"[{inspect.currentframe().f_code.co_name}] "
+                        f"Deleting empty folder {replica_sub_folder}"
+                    )
+                    try:
+                        os.rmdir(replica_sub_folder)
+                    except OSError as e:
+                        logger.error(
+                            f"[{inspect.currentframe().f_code.co_name}] "
+                            f"Error occurred while deleting folder "
+                            f"{replica_sub_folder}: {e}"
+                        )
+                else:
+                    logger.warning(
+                        f"[{inspect.currentframe().f_code.co_name}] "
+                        f"Folder {replica_sub_folder} "
+                        f"is not empty, skipping deletion"
+                    )
+
+
 async def main():
     parser = argparse.ArgumentParser(
         description="Folder synchronization program")
@@ -121,11 +168,13 @@ async def main():
         while True:
             await synchronize_folders(args.source, args.replica, logger)
             await synchronize_folders_delete(args.source, args.replica, logger)
+            await synchronize_empty_folders(args.source, args.replica, logger)
             await asyncio.sleep(args.interval)
     else:
         logger.debug("Starting in one-run mode")
         await synchronize_folders(args.source, args.replica, logger)
         await synchronize_folders_delete(args.source, args.replica, logger)
+        await synchronize_empty_folders(args.source, args.replica, logger)
 
 
 if __name__ == "__main__":

@@ -21,7 +21,12 @@ def setup_logging(log_file, console_logging=True):
         "%(asctime)s - %(log_color)s%(levelname)s - %(message)s",
         datefmt=None,
         reset=True,
-        log_colors={"DEBUG": 'cyan', "INFO": "green"},
+        log_colors={
+            "DEBUG": 'cyan',
+            "INFO": "green",
+            'WARNING':  'yellow',
+            'ERROR': 'red',
+        },
         secondary_log_colors={},
         style='%'
     )

@@ -61,8 +61,8 @@ async def synchronize_folders(source_folder, replica_folder, logger):
                         f"file {source_file} as MD5 hashes match")
 
 
-async def synchronize_folders_delete(
-        source_folder, replica_folder, logger):
+async def synchronize_folders_delete(source_folder, replica_folder, logger):
+    # Delete empty folders in replica folder
     for root, dirs, files in os.walk(replica_folder):
         for file in files:
             replica_file = str(os.path.join(root, file))

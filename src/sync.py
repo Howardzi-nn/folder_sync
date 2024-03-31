@@ -83,7 +83,7 @@ async def main():
     parser.add_argument(
         "-i",
         "--interval",
-        type=int,
+        type=float,
         default=1,
         help="Synchronization interval in seconds (default: 1)"
     )

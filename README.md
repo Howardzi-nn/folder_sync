@@ -75,6 +75,6 @@ make run_sync # To run the program with default arguments
 ```bash
 python3 src/sync.py -sync --interval 1 --log logs/mylog.log --replica /path/to/replica --source /path/to/source
 ```
-
+___
 ## Author
 [Martin Fencl](https://github.com/Howardzi-nn) | [martin@martinfencl.eu](mailto:martin@martinfencl.eu)

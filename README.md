@@ -58,10 +58,10 @@ make help # To see the help message
 make install # To install Venv and dependencies
 ```
 ```bash
-make run # To run the program with default arguments
+make run_ # To run the program with default arguments
 ```
 ```bash
-make run_sync # To run the program with default arguments
+make run_sync_ # To run the program with default arguments
 ```
 
 **Arguments:**

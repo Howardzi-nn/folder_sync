@@ -1,6 +1,6 @@
 .ONESHELL:
 
-.PHONY: help venv install run run_sync
+.PHONY: help venv install run_ run_sync_ run run_sync
 
 help:
 	@echo "Please use 'make <target>' where <target> is one of"
@@ -21,6 +21,18 @@ install: venv
 	   pip install -r requirements.txt; \
 	)
 	@echo "Virtual environment created, packages installed in sync_venv, use it with:\nsource sync_venv/bin/activate"
+
+run_:
+	( \
+	   source sync_venv/bin/activate; \
+	   python3 src/sync.py; \
+	)
+
+run_sync_:
+	( \
+	   source sync_venv/bin/activate; \
+	   python3 src/sync.py -sync; \
+	)
 
 run:
 	python3 src/sync.py

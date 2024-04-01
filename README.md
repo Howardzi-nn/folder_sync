@@ -53,8 +53,15 @@ There is **Makefile** in the root directory of the project. You can run the prog
 
 ```bash
 make help # To see the help message
+```
+```bash
 make install # To install Venv and dependencies
-make run / make run_sync # To run the program with default arguments
+```
+```bash
+make run # To run the program with default arguments
+```
+```bash
+make run_sync # To run the program with default arguments
 ```
 
 **Arguments:**
